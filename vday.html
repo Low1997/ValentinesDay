@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Valentines Day 2026</title>
+    <link rel="stylesheet" href="vday.css">
+</head>
+
+<body>
+
+    <div class="card_wrapper">
+        <div class="valentines_card">
+
+            <div class="front_card">
+                <img src="cover.webp" class="front_img">
+                <div class="front_text">
+                    <h3>致陈怡燃</h3>
+                </div>
+
+                 <div class="click_hint">Click to open 💌</div>
+            </div>
+
+            <div class="inside_card">
+                <img src="picture.jpg" class="inside_img">
+
+                <div class="inside_text">
+                    <h4>爱你的全部，<br>
+                        无论甜或苦，<br>
+                        世界再怎么地辜负，<br>
+                        我也不会让你孤独。<br>
+                    </h4>
+
+                    <h6 style="text-align: right;padding-right:50px;">
+                        流汗橙
+                    </h6>
+                </div>
+
+                <audio id="loveSong">
+                    <source src="song.mp3" type="audio/mp3">
+                </audio>
+
+                <a href="https://youtu.be/gYtwR1BuT8E" style="color:rgb(249, 55, 120)"> &hearts; 爱你的全部.mp4 &hearts;</a>
+            </div>
+
+
+            <div class="hearts"></div>
+
+        </div>
+    </div>
+
+    <script>
+        const card = document.querySelector('.valentines_card');
+        const audio = document.getElementById('loveSong');
+        const heartsContainer = document.querySelector('.hearts');
+
+        let hasPlayed = false;
+        let heartsSpawned = false;
+
+        card.addEventListener('click', () => {
+            const isOpening = !card.classList.contains('open');
+            card.classList.toggle('open');
+
+            // Play music once
+            if (isOpening && !hasPlayed) {
+                audio.play().catch(() => { });
+                hasPlayed = true;
+            }
+
+            // Spawn hearts once per open
+            if (isOpening && !heartsSpawned) {
+                spawnHearts();
+                heartsSpawned = true;
+            }
+
+            // Pause when closing (optional)
+            if (!card.classList.contains('open')) {
+                audio.pause();
+                heartsSpawned = false;
+                hasPlayed = false;
+            }
+        });
+
+        // Prevent inner clicks from closing card
+        audio.addEventListener('click', e => e.stopPropagation());
+        document.querySelectorAll('.no-flip').forEach(el =>
+            el.addEventListener('click', e => e.stopPropagation())
+        );
+
+        function spawnHearts() {
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '♥';
+
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = 16 + Math.random() * 24 + 'px';
+                heart.style.animationDuration = 2.5 + Math.random() * 1.5 + 's';
+                heart.style.animationDelay = Math.random() * 0.5 + 's';
+
+                heartsContainer.appendChild(heart);
+
+                // Clean up
+                heart.addEventListener('animationend', () => {
+                    heart.remove();
+                });
+            }
+        }
+    </script>
+
+</body>
+
+</html>
